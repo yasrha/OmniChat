@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css"
+import "./App.css";
 
 export default function Background() {
   const svgStyles = {
@@ -13,7 +13,6 @@ export default function Background() {
     backgroundColor: "#0e4166",
     backgroundImage:
       "linear-gradient(to bottom, rgba(14, 65, 102, 0.86), #0e4166)",
-    
   };
 
   const stopStyle = {

@@ -34,10 +34,15 @@ public class AuthService {
     }
 
     public RegisterResponse registerUser(User user) {
-        User userExists = userRepository.findByEmail(user.getEmail());
+        User userEmailExists = userRepository.findByEmail(user.getEmail());
+        User usernameExists = userRepository.findByUsername(user.getUsername());
 
-        if (userExists != null)
-            return new RegisterResponse(false, "User already exists", null);
+
+        if (userEmailExists != null)
+            return new RegisterResponse(false, "User with this email already exists", null);
+
+        if (usernameExists != null)
+            return new RegisterResponse(false, "User with this username already exists", null);
 
         userRepository.save(user);
         return new RegisterResponse(true, "Successfully registered new user", user);

@@ -21,26 +21,25 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public LoginResponse authenticateUser(String userName, String password) {
-        User user = userRepository.findByUsername(userName);
+    public LoginResponse authenticateUser(String email, String password) {
+        User user = userRepository.findByEmail(email);
 
         if (user == null)
-            return new LoginResponse(false, "User does not exist");
+            return new LoginResponse(false, "User does not exist", null);
 
         if (!Objects.equals(password, user.getPassword()))
-            return new LoginResponse(false, "Incorrect password");
+            return new LoginResponse(false, "Incorrect password", null);
 
-        return new LoginResponse(true, "Login success");
+        return new LoginResponse(true, "Login success", user);
     }
 
     public RegisterResponse registerUser(User user) {
-        User userExists = userRepository.findByUsername(user.getUsername());
+        User userExists = userRepository.findByEmail(user.getEmail());
 
-        if (userExists != null) {
-            return new RegisterResponse(false, "User already exists");
-        }
+        if (userExists != null)
+            return new RegisterResponse(false, "User already exists", null);
 
         userRepository.save(user);
-        return new RegisterResponse(true, "Successfully registered new user");
+        return new RegisterResponse(true, "Successfully registered new user", user);
     }
 }

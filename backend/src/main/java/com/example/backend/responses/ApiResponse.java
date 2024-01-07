@@ -1,13 +1,14 @@
 package com.example.backend.responses;
 
-import com.example.backend.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-public class RegisterResponse {
-    private boolean success;
+@NoArgsConstructor
+public class ApiResponse<T> {
+    private T data;
     private String message;
-    private User user;
+
 }

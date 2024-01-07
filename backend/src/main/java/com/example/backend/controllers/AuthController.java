@@ -1,6 +1,8 @@
 package com.example.backend.controllers;
 
+import com.example.backend.dtos.LoginRequest;
 import com.example.backend.models.User;
+import com.example.backend.responses.ApiResponse;
 import com.example.backend.responses.LoginResponse;
 import com.example.backend.responses.RegisterResponse;
 import com.example.backend.services.AuthService;
@@ -22,33 +24,37 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
-        LoginResponse loginResponse = authService.authenticateUser(user.getUsername(), user.getPassword());
+    @PostMapping(value = "/login", consumes = "application/json")
+    public ResponseEntity<ApiResponse<User>> login(@RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = authService.authenticateUser(loginRequest.getEmail(), loginRequest.getPassword());
 
         if (loginResponse.isSuccess()) {
+            ApiResponse<User> apiResponse = new ApiResponse<>(loginResponse.getUser(), loginResponse.getMessage());
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(loginResponse.getMessage());
+                    .body(apiResponse);
         } else {
+            ApiResponse<User> apiResponse = new ApiResponse<>(null, loginResponse.getMessage());
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body(loginResponse.getMessage());
+                    .body(apiResponse);
         }
     }
 
     @PostMapping(value = "/register",  consumes = "application/json")
-    public ResponseEntity<String> signup(@RequestBody User user) {
+    public ResponseEntity<ApiResponse<User>> signup(@RequestBody User user) {
         RegisterResponse registerResponse = authService.registerUser(user);
 
         if (registerResponse.isSuccess()) {
+            ApiResponse<User> apiResponse = new ApiResponse<>(registerResponse.getUser(), registerResponse.getMessage());
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(registerResponse.getMessage());
+                    .body(apiResponse);
         } else {
+            ApiResponse<User> apiResponse = new ApiResponse<>(null, registerResponse.getMessage());
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
-                    .body(registerResponse.getMessage());
+                    .body(apiResponse);
         }
     }
 }

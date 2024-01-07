@@ -37,7 +37,6 @@ public class AuthService {
         User userEmailExists = userRepository.findByEmail(user.getEmail());
         User usernameExists = userRepository.findByUsername(user.getUsername());
 
-
         if (userEmailExists != null)
             return new RegisterResponse(false, "User with this email already exists", null);
 

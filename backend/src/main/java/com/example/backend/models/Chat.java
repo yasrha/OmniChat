@@ -6,13 +6,15 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Document(collection = "Chats")
 public class Chat {
     private String id;
-    private List<User> users;
+    private List<String> usernames;
     private List<Message> messages;
     private Date dateCreated;
 }

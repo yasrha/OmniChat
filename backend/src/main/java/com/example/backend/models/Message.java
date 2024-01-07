@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class Message {
     private String text;
-    private String fromUser;
+    private String username;
     private Date timeSent;
 }

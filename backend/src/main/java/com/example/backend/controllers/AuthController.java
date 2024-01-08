@@ -1,6 +1,6 @@
 package com.example.backend.controllers;
 
-import com.example.backend.dtos.LoginRequest;
+import com.example.backend.requests.LoginRequest;
 import com.example.backend.models.User;
 import com.example.backend.responses.ApiResponse;
 import com.example.backend.responses.LoginResponse;

@@ -1,18 +1,18 @@
 package com.example.backend.controllers;
 
-import com.example.backend.dtos.CreateChatRequest;
+import com.example.backend.requests.CreateChatRequest;
 import com.example.backend.models.Chat;
+import com.example.backend.models.Message;
 import com.example.backend.responses.ApiResponse;
 import com.example.backend.responses.CreateChatResponse;
+import com.example.backend.responses.GetChatHistoryResponse;
 import com.example.backend.services.ChatService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/chats")
@@ -39,8 +39,25 @@ public class ChatController {
                     .status(HttpStatus.NOT_FOUND)
                     .body(apiResponse);
         }
+    }
 
+    @GetMapping("/{chatId}/history")
+    public ResponseEntity<ApiResponse<List<Message>>> getChatHistory(@PathVariable int chatId) {
+        GetChatHistoryResponse getChatHistoryResponse = chatService.getChatHistory(chatId);
 
+        if (getChatHistoryResponse.isSuccess()) {
+            ApiResponse<List<Message>> apiResponse = new ApiResponse<>(
+                    getChatHistoryResponse.getMessages(),
+                    getChatHistoryResponse.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(apiResponse);
+        } else {
+            ApiResponse<List<Message>> apiResponse = new ApiResponse<>(null, getChatHistoryResponse.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(apiResponse);
+        }
     }
 
 }

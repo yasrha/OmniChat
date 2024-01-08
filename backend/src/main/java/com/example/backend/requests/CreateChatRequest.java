@@ -1,13 +1,14 @@
-package com.example.backend.dtos;
+package com.example.backend.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest {
-    private String email;
-    private String password;
+public class CreateChatRequest {
+    private List<String> usernames;
 }

@@ -1,12 +1,13 @@
 package com.example.backend.services;
 
-import com.example.backend.dtos.CreateChatRequest;
+import com.example.backend.requests.CreateChatRequest;
 import com.example.backend.models.Chat;
 import com.example.backend.models.Message;
 import com.example.backend.models.User;
 import com.example.backend.repositories.ChatRepository;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.responses.CreateChatResponse;
+import com.example.backend.responses.GetChatHistoryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +65,21 @@ public class ChatService {
         );
     }
 
-    public List<Message> getChatHistory(String chatId) {
-        return null;
+    public GetChatHistoryResponse getChatHistory(int chatId) {
+        Chat chat = chatRepository.findChatByChatId(chatId);
+
+        if (chat != null) {
+            return new GetChatHistoryResponse(
+                    true,
+                    "Successfully fetched chat history",
+                    chat.getMessages()
+            );
+        } else {
+            return new GetChatHistoryResponse(
+                    false,
+                    "Chat does not exist",
+                    null
+            );
+        }
     }
 }

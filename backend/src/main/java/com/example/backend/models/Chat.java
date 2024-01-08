@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Document(collection = "Chats")
 public class Chat {
-    private String id;
+    private int id;
     private List<String> usernames;
     private List<Message> messages;
     private Date dateCreated;

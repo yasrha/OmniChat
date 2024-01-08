@@ -42,7 +42,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/register",  consumes = "application/json")
-    public ResponseEntity<ApiResponse<User>> signup(@RequestBody User user) {
+    public ResponseEntity<ApiResponse<User>> register(@RequestBody User user) {
         RegisterResponse registerResponse = authService.registerUser(user);
 
         if (registerResponse.isSuccess()) {

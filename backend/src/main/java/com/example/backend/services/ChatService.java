@@ -66,7 +66,7 @@ public class ChatService {
     }
 
     public GetChatHistoryResponse getChatHistory(int chatId) {
-        Chat chat = chatRepository.findChatByChatId(chatId);
+        Chat chat = chatRepository.findChatById(chatId);
 
         if (chat != null) {
             return new GetChatHistoryResponse(

@@ -2,6 +2,7 @@ package com.example.backend.controllers;
 
 import com.example.backend.requests.LoginRequest;
 import com.example.backend.models.User;
+import com.example.backend.requests.RegisterRequest;
 import com.example.backend.responses.ApiResponse;
 import com.example.backend.responses.LoginResponse;
 import com.example.backend.responses.RegisterResponse;
@@ -42,8 +43,8 @@ public class AuthController {
     }
 
     @PostMapping(value = "/register",  consumes = "application/json")
-    public ResponseEntity<ApiResponse<User>> register(@RequestBody User user) {
-        RegisterResponse registerResponse = authService.registerUser(user);
+    public ResponseEntity<ApiResponse<User>> register(@RequestBody RegisterRequest registerRequest) {
+        RegisterResponse registerResponse = authService.registerUser(registerRequest);
 
         if (registerResponse.isSuccess()) {
             ApiResponse<User> apiResponse = new ApiResponse<>(registerResponse.getUser(), registerResponse.getMessage());

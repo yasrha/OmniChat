@@ -8,6 +8,7 @@ import com.example.backend.repositories.ChatRepository;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.responses.CreateChatResponse;
 import com.example.backend.responses.GetChatHistoryResponse;
+import com.example.backend.responses.GetChatsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,6 +79,27 @@ public class ChatService {
             return new GetChatHistoryResponse(
                     false,
                     "Chat does not exist",
+                    null
+            );
+        }
+    }
+
+    public GetChatsResponse getChats(List<Integer> chatIds) {
+        List<Chat> chats = chatRepository.findByIdIn(chatIds);
+
+        // Return empty messages array list to reduce size of data sent to client
+        if (!chats.isEmpty()) {
+            return new GetChatsResponse(
+                    true,
+                    "Successfully fetched chats",
+                    chats.stream()
+                            .map(chat -> new Chat(chat.getId(), chat.getUsernames(), new ArrayList<>(), chat.getDateCreated()))
+                            .collect(Collectors.toList())
+            );
+        } else {
+            return new GetChatsResponse(
+                    true,
+                    "No chats exist",
                     null
             );
         }

@@ -6,7 +6,9 @@ import com.example.backend.models.Message;
 import com.example.backend.responses.ApiResponse;
 import com.example.backend.responses.CreateChatResponse;
 import com.example.backend.responses.GetChatHistoryResponse;
+import com.example.backend.responses.GetChatsResponse;
 import com.example.backend.services.ChatService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +58,37 @@ public class ChatController {
             ApiResponse<List<Message>> apiResponse = new ApiResponse<>(null, getChatHistoryResponse.getMessage());
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
+                    .body(apiResponse);
+        }
+    }
+
+    @PostMapping(value = "/fetchChats", consumes = "application/json")
+    public ResponseEntity<ApiResponse<List<Chat>>> getChats(@RequestBody List<Integer> chatIds) {
+        GetChatsResponse getChatsResponse = chatService.getChats(chatIds);
+
+        if (getChatsResponse.isSuccess() && getChatsResponse.getChats() != null) {
+            ApiResponse<List<Chat>> apiResponse = new ApiResponse<>(
+                    getChatsResponse.getChats(),
+                    getChatsResponse.getMessage()
+            );
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(apiResponse);
+        } else if (getChatsResponse.isSuccess()) {
+            ApiResponse<List<Chat>> apiResponse = new ApiResponse<>(
+                    null,
+                    getChatsResponse.getMessage()
+            );
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(apiResponse);
+        } else {
+            ApiResponse<List<Chat>> apiResponse = new ApiResponse<>(
+                    null,
+                    getChatsResponse.getMessage()
+            );
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
                     .body(apiResponse);
         }
     }

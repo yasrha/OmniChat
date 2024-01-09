@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ChatRepository extends MongoRepository<Chat, String> {
     Chat findChatById(int chatId);
+    List<Chat> findByIdIn(List<Integer> ids);
 }

@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
-import Background from "../Background";
 
 function SplashScreen() {
   const navigate = useNavigate();
@@ -23,7 +22,6 @@ function SplashScreen() {
       <Button variant="contained" onClick={navigateToRegister}>
         Register
       </Button>
-      <Background />
     </div>
   );
 }

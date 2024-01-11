@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import ApiConfig from "../ApiConfig";
-import Background from "../Background";
+import { useUser } from "../contexts/UserContext";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -12,6 +12,8 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const { setUser } = useUser();
 
   const textFieldStyle = {
     backgroundColor: "lightgray",
@@ -42,6 +44,8 @@ function LoginPage() {
 
       if (response.status === 200) {
         console.log("Login successful:", data);
+        console.log(data.data);
+        setUser(data.data);
         navigate("/chat");
       } else {
         setError(true);
@@ -94,7 +98,6 @@ function LoginPage() {
           Login
         </Button>
       </Box>
-      <Background />
     </div>
   );
 }

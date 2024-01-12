@@ -20,6 +20,7 @@ function ChatsPage() {
     setIsModalOpen(false);
   };
 
+  // Fetch the chats for a user
   useEffect(() => {
     const url = "http://localhost:8080/api/chats/fetchChats";
     console.log("user: ", user);
@@ -56,6 +57,7 @@ function ChatsPage() {
     fetchData();
   }, [user]);
 
+  // Create a new chat
   const handleCreateChat = async (usernames) => {
     // Retrieve the current logged-in user's username from the context
     const loggedInUsername = user && user.username;

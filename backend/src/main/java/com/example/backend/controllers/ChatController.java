@@ -3,12 +3,9 @@ package com.example.backend.controllers;
 import com.example.backend.requests.CreateChatRequest;
 import com.example.backend.models.Chat;
 import com.example.backend.models.Message;
-import com.example.backend.responses.ApiResponse;
-import com.example.backend.responses.CreateChatResponse;
-import com.example.backend.responses.GetChatHistoryResponse;
-import com.example.backend.responses.GetChatsResponse;
+import com.example.backend.responses.*;
+import com.example.backend.services.ChatMessageService;
 import com.example.backend.services.ChatService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +16,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/chats")
 public class ChatController {
-    ChatService chatService;
+    private final ChatService chatService;
+    private final ChatMessageService chatMessageService;
 
     @Autowired
-    public ChatController(ChatService chatService) {
+    public ChatController(ChatService chatService, ChatMessageService chatMessageService) {
         this.chatService = chatService;
+        this.chatMessageService = chatMessageService;
     }
 
     @PostMapping(value = "/create", consumes = "application/json")
@@ -86,6 +85,29 @@ public class ChatController {
             ApiResponse<List<Chat>> apiResponse = new ApiResponse<>(
                     null,
                     getChatsResponse.getMessage()
+            );
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(apiResponse);
+        }
+    }
+
+    @GetMapping("/{chatId}/messages")
+    public ResponseEntity<ApiResponse<List<Message>>> getMessages(@PathVariable int chatId) {
+        GetMessagesResponse getMessagesResponse = chatMessageService.getMessages(chatId);
+
+        if (getMessagesResponse.isSuccess()) {
+            ApiResponse<List<Message>> apiResponse = new ApiResponse<>(
+                    getMessagesResponse.getMessages(),
+                    getMessagesResponse.getMessage()
+            );
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(apiResponse);
+        } else {
+            ApiResponse<List<Message>> apiResponse = new ApiResponse<>(
+                    null,
+                    getMessagesResponse.getMessage()
             );
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)

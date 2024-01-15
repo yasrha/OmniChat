@@ -94,6 +94,7 @@ public class ChatController {
 
     @GetMapping("/{chatId}/messages")
     public ResponseEntity<ApiResponse<List<Message>>> getMessages(@PathVariable int chatId) {
+        System.out.println("In getMessages controller");
         GetMessagesResponse getMessagesResponse = chatMessageService.getMessages(chatId);
 
         if (getMessagesResponse.isSuccess()) {

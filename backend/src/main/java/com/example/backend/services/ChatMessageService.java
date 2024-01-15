@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 public class ChatMessageService {
-    private ChatRepository chatRepository;
+    private final ChatRepository chatRepository;
 
     public ChatMessageService(ChatRepository chatRepository) {
         this.chatRepository = chatRepository;

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import ApiConfig from "../ApiConfig";
+import ApiConfig from "../config/ApiConfig";
 import Background from "../Background";
 
 function RegisterPage() {

@@ -11,6 +11,12 @@ function ChatsPage() {
   const [chats, setChats] = useState([]);
   const { user } = useUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedChatId, setSelectedChatId] = useState(null);
+
+  const handleChatSelect = (chatId) => {
+    setSelectedChatId(chatId);
+    console.log("chatId: ", chatId);
+  };
 
   const handleNewChat = () => {
     setIsModalOpen(true);
@@ -102,10 +108,16 @@ function ChatsPage() {
             <AddCommentIcon />
           </IconButton>
         </div>
-        <ChatList chats={chats} />
+        <ChatList chats={chats} onChatSelect={handleChatSelect} />
       </div>
       <div className="chat-window">
-        <ChatWindow />
+        {selectedChatId ? (
+          <ChatWindow chatId={selectedChatId} />
+        ) : (
+          <div className="select-chat-message">
+            Select a chat to view messages
+          </div>
+        )}
       </div>
       <NewChatModal
         open={isModalOpen}

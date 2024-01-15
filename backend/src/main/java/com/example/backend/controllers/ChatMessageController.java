@@ -11,6 +11,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import java.util.Date;
+
 @Controller
 public class ChatMessageController {
     private final ChatMessageService chatMessageService;
@@ -20,8 +22,10 @@ public class ChatMessageController {
     }
 
     @MessageMapping("/chat/{chatId}/sendMessage")
-    @SendTo("/topic/chats/{chatId}")
+    @SendTo("/topic/chat/{chatId}")
     public ResponseEntity<ApiResponse<Message>> sendMessage(@DestinationVariable int chatId, Message message) {
+        System.out.println("In sendMessage controller");
+        message.setTimeSent(new Date());
         SendMessageResponse sendMessageResponse = chatMessageService.saveMessage(chatId, message);
 
         if (sendMessageResponse.isSuccess()) {
